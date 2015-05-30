@@ -1,0 +1,121 @@
+#include <SoftwareSerial.h>
+#define cSSC_OUT     12         //Output pin for (SSC32 RX) on BotBoard (Yellow)
+#define cSSC_IN      13         //Input pin for (SSC32 TX) on BotBoard (Blue)
+#define cSSC_BAUD        38400   //SSC32 BAUD rate
+
+SoftwareSerial SSCSerial(cSSC_IN, cSSC_OUT); // where I have the pins defined in a config file:
+int angle = 0;   // for incoming serial data
+
+
+void setup() {
+    SSCSerial.begin(cSSC_BAUD );
+    Serial.begin(9600);
+}
+
+void move_servo(int servo, int angle, int time) {
+  SSCSerial.print("#");
+  SSCSerial.print(servo);
+  SSCSerial.print(" P");
+  SSCSerial.print(angle);
+  SSCSerial.print(" T");
+  SSCSerial.println(time);
+}
+
+void loop(){
+
+
+   // send data only when you receive data:
+        if (Serial.available() > 0) {
+                // read the incoming byte:
+                angle = Serial.parseInt();
+
+                if(angle > 0){
+                move_servo(30, angle, 500);
+                Serial.print("ANGLE: ");
+                Serial.println(angle);
+                }
+
+              }
+
+ move_servo(28, 1400, 500);
+ move_servo(29, 1600, 500);
+ move_servo(30, 1300, 500);
+ 
+
+              
+  
+   move_servo(0, 1300, 500); //front-right leg - far moving back
+   move_servo(1, 2150, 500);
+   move_servo(2, 1250, 500);
+
+   move_servo(12, 1800, 500);  //front-right leg - far lifted up
+   move_servo(13, 800, 500);
+   move_servo(14, 2225, 500); 
+
+   move_servo(16, 1200, 500);
+   move_servo(17, 1100, 500);
+   move_servo(18, 2250, 500);
+
+   move_servo(28, 1900, 500);
+   move_servo(29, 1600, 500);
+   move_servo(30, 1300, 500);
+   
+   
+
+   delay(500);
+
+   move_servo(13, 1100, 500);
+   move_servo(16, 1100, 500);
+   
+
+   delay(100);   
+   
+   move_servo(0, 1900, 500);   //front-right leg - at middle
+   move_servo(1, 2150, 500); 
+   move_servo(2, 1250, 500);
+
+   move_servo(12, 1200, 500);  //bottom-right leg - at middle
+   move_servo(13, 1100, 500);
+   move_servo(14, 2225, 500);
+
+   move_servo(16, 1800, 500);
+   move_servo(17, 900, 500);
+   move_servo(18, 2250, 500);
+
+   move_servo(28, 1400, 500);
+   move_servo(29, 1600, 500);
+   move_servo(30, 1300, 500);
+ 
+   
+   delay(500);  
+
+   move_servo(1, 1800, 500);
+   move_servo(29, 1300, 500);
+  
+  
+   delay(100);   
+ 
+   move_servo(0, 1300, 500); //front-right leg - far lifted up
+   move_servo(1, 1800, 500);
+   move_servo(2, 1250, 500);
+
+   move_servo(12, 1200, 500); //bottom-right leg - far moving back
+   move_servo(13, 800, 500);
+   move_servo(14, 2225, 500);
+
+   move_servo(16, 1200, 500);
+   move_servo(17, 900, 500);
+   move_servo(18, 2250, 500);
+
+   move_servo(28, 1900, 500);
+   move_servo(29, 1300, 500);
+   move_servo(30, 1300, 500);
+   
+
+   delay(500);  
+
+  
+
+
+
+ }
