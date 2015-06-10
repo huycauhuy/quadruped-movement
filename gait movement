@@ -1,17 +1,53 @@
 #include <SoftwareSerial.h>
-#define cSSC_OUT     12         //Output pin for (SSC32 RX) on BotBoard (Yellow)
-#define cSSC_IN      13         //Input pin for (SSC32 TX) on BotBoard (Blue)
+#include <ctype.h>
+#define cSSC_OUT     13         //Output pin for (SSC32 RX) on BotBoard (Yellow)
+#define cSSC_IN      12         //Input pin for (SSC32 TX) on BotBoard (Blue)
 #define cSSC_BAUD        38400   //SSC32 BAUD rate
 
 SoftwareSerial SSCSerial(cSSC_IN, cSSC_OUT); // where I have the pins defined in a config file:
-int angle = 0;   // for incoming serial data
+void move_servo(int servo, int angle, int time);
+void FORWARD(void);
+void BACKWARD(void);
+void TURN_LEFT(void);
+void TURN_RIGHT(void);
 
+void REST(void);
+void IDLE(void);
 
 void setup() {
     SSCSerial.begin(cSSC_BAUD );
     Serial.begin(9600);
 }
 
+void loop(){
+ // send data only when you receive data:
+        if (Serial.available() > 0) {
+                // read the incoming byte:
+                char command;                
+                command = Serial.read();                
+                switch (command) {
+                    case 'R' : 
+                       REST();
+                    break;
+
+                    case 'I' :
+                       IDLE();
+                    break;
+                   
+                    case 'W' :
+                       FORWARD();                       
+                    break;
+
+                    case 'S' :
+                       BACKWARD();                       
+                    break; 
+
+                    case 'E' :
+                        TURN_RIGHT();
+                    break;                         
+              }
+           } 
+          }
 void move_servo(int servo, int angle, int time) {
   SSCSerial.print("#");
   SSCSerial.print(servo);
@@ -20,102 +56,412 @@ void move_servo(int servo, int angle, int time) {
   SSCSerial.print(" T");
   SSCSerial.println(time);
 }
+void REST(void){
+    Serial.println("REST");
+    //Bot Rest postion
+    move_servo(0, 1700, 1500);
+    move_servo(1, 1200, 1500);
+    move_servo(2, 1300, 1500);
+    
+    move_servo(12, 1300, 1500);
+    move_servo(13, 1800, 1500);
+    move_servo(14, 2300, 1500);
+    
+    move_servo(16, 1300, 1500);
+    move_servo(17, 2500, 1500);
+    move_servo(18, 2300, 1500);
+    
+    move_servo(28, 1900, 1500);
+    move_servo(29, 800, 1500);
+    move_servo(30, 600, 1500);  
+}
+void IDLE(void){
+     Serial.println("IDLE");
+                      //Bot Standing Idle
+                        move_servo(0, 1700, 1000); 
+                        move_servo(1, 2300, 1000);
+                        move_servo(2, 1100, 1000);
 
-void loop(){
+                        move_servo(12, 1300, 1000);  
+                        move_servo(13, 650, 1000);
+                        move_servo(14, 2400, 1000); 
+
+                        move_servo(16, 1300, 1000);
+                        move_servo(17, 1400, 1000);
+                        move_servo(18, 2400, 1000);
+
+                        move_servo(28, 1900, 1000);
+                        move_servo(29, 1900, 1000);
+                        move_servo(30, 500, 1000);
+
+                        delay(1000);
+
+                        move_servo(0, 1700, 1000); 
+                        move_servo(1, 2300, 1000);
+                        move_servo(2, 1400, 1000);
+
+                        move_servo(12, 1300, 1000);  
+                        move_servo(13, 650, 1000);
+                        move_servo(14, 2100, 1000); 
+
+                        move_servo(16, 1300, 1000);
+                        move_servo(17, 1400, 1000);
+                        move_servo(18, 2100, 1000);
+
+                        move_servo(28, 1900, 1000);
+                        move_servo(29, 1900, 1000);
+                        move_servo(30, 800, 1000);  
+}
+void FORWARD(void){
+    Serial.println("Forward");
+    //Bot Rest postion
+    move_servo(0, 1900, 500); //both leg at middle
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1300, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1700, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1600, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+    
+    delay(500);
+    
+    move_servo(0, 1700, 500);
+    move_servo(1, 1800, 500);//lifting up
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1300, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1550, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1600, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+    
+    
+    delay(500);
+    
+    move_servo(0, 1400, 500);
+    move_servo(1, 2300, 500);//DONW
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1600, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1100, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1850, 500);
+    move_servo(29, 1400, 500);//LIFTING UP- NEED MODIFICATION
+    move_servo(30, 800, 500);
+    
+    delay(500);
+    
+    
+    move_servo(0, 1400, 500);
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1600, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2200, 500);
+    
+    move_servo(16, 1100, 500); //BOTH LEG AT MIDDLE
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 2000, 500);
+    move_servo(29, 1900, 500);//DOWN
+    move_servo(30, 600, 500);
+    
+    
+    
+    delay(500);
+    
+    move_servo(0, 1400, 500);
+    move_servo(1, 2300, 500);//DONW
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1600, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2200, 500);//LEG FIX
+    
+    move_servo(16, 1350, 500);
+    move_servo(17, 1900, 500);//LIFTING UP
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1850, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+    
+    
+    
+    delay(500);
+    
+    move_servo(0, 1950, 500);
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1400, 500);
+    move_servo(13, 1150, 500);//UP
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1600, 500);
+    move_servo(17, 1400, 500);//DOWN
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1600, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+    
+    //for stability on 
+
+    delay(500);
+    move_servo(2, 1200, 500);
+    move_servo(14, 2300, 500);
+    move_servo(18, 2400, 500);
+    move_servo(30, 600, 500);
+
+    delay(200);    
+    move_servo(0, 1900, 500); //both leg at middle
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1300, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1700, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1600, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+
+void BACKWARD(void){
+    Serial.println("BACKWARD");
+    //Bot Rest postion
+    move_servo(0, 1900, 500); //both leg at middle
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1300, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1700, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1600, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+    
+    delay(500);
+
+    move_servo(0, 1950, 500);
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1400, 500);
+    move_servo(13, 1150, 500);//UP
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1600, 500);
+    move_servo(17, 1400, 500);//DOWN
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1600, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+
+     delay(500);
+
+    move_servo(0, 1400, 500);
+    move_servo(1, 2300, 500);//DONW
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1600, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2200, 500);//LEG FIX
+    
+    move_servo(16, 1350, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1850, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+   
+    delay(500);
+
+     move_servo(0, 1400, 500);
+    move_servo(1, 2300, 500);//DONW
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1600, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2200, 500);//LEG FIX
+    
+    move_servo(16, 1350, 500);
+    move_servo(17, 1900, 500);//LIFTING UP
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1850, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+
+    delay(500);
+    
+    move_servo(0, 1400, 500);
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1600, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1100, 500);
+    move_servo(17, 1400, 500);//DONW
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1850, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500); 
+
+    delay(500);
+    
+    move_servo(0, 1400, 500);
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1600, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1100, 500);
+    move_servo(17, 1400, 500);//DONW
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1850, 500);
+    move_servo(29, 1400, 500);//LIFTING UP- NEED MODIFICATION
+    move_servo(30, 800, 500);     
+    //
+    delay(500);
+    
+    move_servo(0, 1400, 500);
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1300, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1550, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1600, 500);
+    move_servo(29, 1900, 500);//DOWN
+    move_servo(30, 800, 500);
+    
+
+    delay(500);
+    
+    move_servo(0, 1700, 500);
+    move_servo(1, 1800, 500);//lifting up
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1300, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1550, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1600, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+    
+    delay(500);
+
+    move_servo(0, 1900, 500); //both leg at middle
+    move_servo(1, 2300, 500);//DOWN
+    move_servo(2, 1400, 500);
+    
+    move_servo(12, 1300, 500);
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500);
+    
+    move_servo(16, 1700, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2200, 500);
+    
+    move_servo(28, 1600, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+
+}
+void TURN_RIGHT(void){
+     Serial.println("TURN_RIGHT");
+
+    move_servo(0, 1700, 500); 
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+
+    move_servo(12, 1300, 500);  
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500); 
+
+    move_servo(16, 1300, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2100, 500);
+
+    move_servo(28, 1900, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
+
+    delay(200)
+
+    move_servo(1, 2300, 200);
+    move_servo(29, 1600, 200);
+
+    delay(200)
+    move_servo(0, 1500, 500);
+    move_servo(28, 1700, 500);
+    
+   move_servo(0, 1700, 500); 
+    move_servo(1, 2300, 500);
+    move_servo(2, 1400, 500);
+
+    move_servo(12, 1300, 500);  
+    move_servo(13, 650, 500);
+    move_servo(14, 2100, 500); 
+
+    move_servo(16, 1300, 500);
+    move_servo(17, 1400, 500);
+    move_servo(18, 2100, 500);
+
+    move_servo(28, 1900, 500);
+    move_servo(29, 1900, 500);
+    move_servo(30, 800, 500);
 
 
-   // send data only when you receive data:
-        if (Serial.available() > 0) {
-                // read the incoming byte:
-                angle = Serial.parseInt();
-
-                if(angle > 0){
-                move_servo(30, angle, 500);
-                Serial.print("ANGLE: ");
-                Serial.println(angle);
-                }
-
-              }
-
- move_servo(28, 1400, 500);
- move_servo(29, 1600, 500);
- move_servo(30, 1300, 500);
- 
-
-              
-  
-   move_servo(0, 1300, 500); //front-right leg - far moving back
-   move_servo(1, 2150, 500);
-   move_servo(2, 1250, 500);
-
-   move_servo(12, 1800, 500);  //front-right leg - far lifted up
-   move_servo(13, 800, 500);
-   move_servo(14, 2225, 500); 
-
-   move_servo(16, 1200, 500);
-   move_servo(17, 1100, 500);
-   move_servo(18, 2250, 500);
-
-   move_servo(28, 1900, 500);
-   move_servo(29, 1600, 500);
-   move_servo(30, 1300, 500);
    
    
-
-   delay(500);
-
-   move_servo(13, 1100, 500);
-   move_servo(16, 1100, 500);
-   
-
-   delay(100);   
-   
-   move_servo(0, 1900, 500);   //front-right leg - at middle
-   move_servo(1, 2150, 500); 
-   move_servo(2, 1250, 500);
-
-   move_servo(12, 1200, 500);  //bottom-right leg - at middle
-   move_servo(13, 1100, 500);
-   move_servo(14, 2225, 500);
-
-   move_servo(16, 1800, 500);
-   move_servo(17, 900, 500);
-   move_servo(18, 2250, 500);
-
-   move_servo(28, 1400, 500);
-   move_servo(29, 1600, 500);
-   move_servo(30, 1300, 500);
- 
-   
-   delay(500);  
-
-   move_servo(1, 1800, 500);
-   move_servo(29, 1300, 500);
-  
-  
-   delay(100);   
- 
-   move_servo(0, 1300, 500); //front-right leg - far lifted up
-   move_servo(1, 1800, 500);
-   move_servo(2, 1250, 500);
-
-   move_servo(12, 1200, 500); //bottom-right leg - far moving back
-   move_servo(13, 800, 500);
-   move_servo(14, 2225, 500);
-
-   move_servo(16, 1200, 500);
-   move_servo(17, 900, 500);
-   move_servo(18, 2250, 500);
-
-   move_servo(28, 1900, 500);
-   move_servo(29, 1300, 500);
-   move_servo(30, 1300, 500);
-   
-
-   delay(500);  
-
-  
-
-
-
- }
+}
