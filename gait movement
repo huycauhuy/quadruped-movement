@@ -251,7 +251,7 @@ void FORWARD(void){
     move_servo(28, 1600, 500);
     move_servo(29, 1900, 500);
     move_servo(30, 800, 500);
-
+}
 void BACKWARD(void){
     Serial.println("BACKWARD");
     //Bot Rest postion
@@ -436,12 +436,12 @@ void TURN_RIGHT(void){
     move_servo(29, 1900, 500);
     move_servo(30, 800, 500);
 
-    delay(200)
+    delay(200);
 
     move_servo(1, 2300, 200);
     move_servo(29, 1600, 200);
 
-    delay(200)
+    delay(200);
     move_servo(0, 1500, 500);
     move_servo(28, 1700, 500);
     
